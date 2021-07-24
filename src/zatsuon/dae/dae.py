@@ -19,6 +19,19 @@ class DenoisedAutoEncoder:
         log_interval=1,
         device=None,
     ):
+        """Train Denoised Auto-Encoder (DAE) for audio data and denoise noisy wav files
+
+        Args:
+            model: torch module which represents DAE
+            criterion: loss function which takes two torch Tensor as arguments
+            optimizer: torch optimizer
+            sampling_rate: sampling rate
+            split_sec: length of each record [sec]
+            batch_size: batch size for training
+            epochs: epochs for training
+            log_interval: log interval for training
+            device: device for training and predicting
+        """
         self.model = model
         self.criterion = criterion
         self.optimizer = optimizer
@@ -34,6 +47,12 @@ class DenoisedAutoEncoder:
             self._set_device()
 
     def train(self, train_dataset, val_dataset):
+        """Train Denoised Auto-Encoder model with given dataset
+
+        Args:
+            train_dataset: dataset for training
+            val_dataset: dataset for validation
+        """
         train_log = []
         eval_log = []
 
@@ -75,6 +94,12 @@ class DenoisedAutoEncoder:
                 print(epoch, train_loss, eval_loss)
 
     def denoise(self, path_to_wav, path_to_output=None):
+        """Denoise given noisy wav data
+
+        Args:
+            path_to_wav: path to target noisy wav file
+            path_to_output: denoised data will be saved in this path
+        """
         raw_wave, _ = librosa.load(path_to_wav, sr=self.sampling_rate)
         wave_padded = pad(raw_wave, self.sampling_rate)
         wave_padded_split = np.array(
@@ -98,12 +123,23 @@ class DenoisedAutoEncoder:
         )
 
     def load_model(self, path_to_state_dict):
+        """Load the parameter for Denoised Auto-Encoder
+
+        Args:
+            path_to_state_dict: the path of target parameters
+        """
         self.model.load_state_dict(
             torch.load(path_to_state_dict, map_location=self.device)
         )
 
     def save_model(self, path_to_state_dict):
+        """Save the parameters of the model
+
+        Args:
+            path_to_state_dict: the path to the saved parameters
+        """
         torch.save(self.model.to("cpu").state_dict(), path_to_state_dict)
 
     def _set_device(self):
+        """Set the available device"""
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
