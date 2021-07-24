@@ -67,12 +67,12 @@ def convert_wav_to_training_data(
     y = []
 
     for p in range(path_list):
-        raw, sr = librosa.load(p, sr=sampling_rate)
+        raw, _ = librosa.load(p, sr=sampling_rate)
         raw_data.append(raw)
 
     for raw_wave in raw_data:
 
-        wave_padded = pad(raw_wave, sr)
+        wave_padded = pad(raw_wave, sampling_rate)
         wave_padded_split = np.array(
             np.split(wave_padded, wave_padded.shape[0] / int(sampling_rate) / split_sec)
         )
