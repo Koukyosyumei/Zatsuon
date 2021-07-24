@@ -15,7 +15,7 @@ class DenoisedAutoEncoder:
         sampling_rate=16e3,
         split_sec=1.0,
         batch_size=1,
-        epoch=1,
+        epochs=1,
         log_interval=1,
         device=None,
     ):
@@ -23,7 +23,7 @@ class DenoisedAutoEncoder:
         self.criterion = criterion
         self.optimizer = optimizer
         self.split_sec = split_sec
-        self.epoch = epoch
+        self.epochs = epochs
         self.log_interval = log_interval
         self.batch_size = batch_size
 
