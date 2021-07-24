@@ -22,10 +22,11 @@ class DenoisedAutoEncoder:
         self.model = model
         self.criterion = criterion
         self.optimizer = optimizer
+        self.sampling_rate = sampling_rate
         self.split_sec = split_sec
+        self.batch_size = batch_size
         self.epochs = epochs
         self.log_interval = log_interval
-        self.batch_size = batch_size
 
         if device is not None:
             self.device = device
