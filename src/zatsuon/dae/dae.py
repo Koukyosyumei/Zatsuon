@@ -1,14 +1,19 @@
+import librosa
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
+
+from ..utils import np2wav, pad
 
 
 class DenoisedAutoEncoder:
     def __init__(
         self,
         model,
-        criterion,
-        optimizer,
+        criterion=None,
+        optimizer=None,
         sampling_rate=16e3,
+        split_sec=1.0,
         batch_size=1,
         epoch=1,
         log_interval=1,
@@ -17,6 +22,7 @@ class DenoisedAutoEncoder:
         self.model = model
         self.criterion = criterion
         self.optimizer = optimizer
+        self.split_sec = split_sec
         self.epoch = epoch
         self.log_interval = log_interval
         self.batch_size = batch_size
@@ -68,10 +74,32 @@ class DenoisedAutoEncoder:
                 print(epoch, train_loss, eval_loss)
 
     def denoise(self, path_to_wav, path_to_output=None):
-        pass
+        raw_wave, _ = librosa.load(path_to_wav, sr=self.sampling_rate)
+        wave_padded = pad(raw_wave, self.sampling_rate)
+        wave_padded_split = np.array(
+            np.split(
+                wave_padded,
+                wave_padded.shape[0] / int(self.sampling_rate) / self.split_sec,
+            )
+        )
+        input_tensor = torch.Tensor(wave_padded_split).reshape(
+            -1, 1, self.sampling_rate
+        )
+
+        with torch.no_grad():
+            y_denoised = self.model(input_tensor)
+        if path_to_output is None:
+            path_to_output = "denoised-" + path_to_wav
+        np2wav(
+            y_denoised.detach().cpu().numpy().reshape(-1),
+            path_to_output,
+            self.sampling_rate,
+        )
 
     def load_model(self, path_to_state_dict):
-        pass
+        self.model.load_state_dict(
+            torch.load(path_to_state_dict, map_location=self.device)
+        )
 
     def save_model(self, path_to_state_dict):
         torch.save(self.model.to("cpu").state_dict(), path_to_state_dict)
