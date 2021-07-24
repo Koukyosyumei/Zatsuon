@@ -14,7 +14,7 @@ def read_requirements():
 console_scripts = []
 
 setup(
-    name="attacksplitnn",
+    name="zatsuon",
     version="0.0.0",
     description="remove noise of audio files",
     author="Hideaki Takahashi",
