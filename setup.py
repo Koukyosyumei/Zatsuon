@@ -11,7 +11,7 @@ def read_requirements():
     return requirements
 
 
-console_scripts = ["zatsuon":"src.app.main:main"]
+console_scripts = ["zatsuon=zatsuon.app:main"]
 
 setup(
     name="zatsuon",
