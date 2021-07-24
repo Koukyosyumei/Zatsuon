@@ -18,8 +18,39 @@ def add_args(parser):
     parser.add_argument(
         "--datadir",
         type=str,
-        metavar="D",
+        metavar="DD",
         help="data directory for training",
+    )
+
+    parser.add_argument(
+        "--noisy_wav",
+        type=str,
+        metavar="NW",
+        help="path to noisy wav",
+    )
+
+    parser.add_argument(
+        "--denoised_wav",
+        type=str,
+        default="denoised_sample.wav",
+        metavar="DW",
+        help="path to denoised wav",
+    )
+
+    parser.add_argument(
+        "--pretrained",
+        type=str,
+        default=None,
+        metavar="PT",
+        help="path to pre-trainedmodel",
+    )
+
+    parser.add_argument(
+        "--saved_model_path",
+        type=str,
+        default="model.pth",
+        metavar="SMP",
+        help="path to trained model",
     )
 
     parser.add_argument(
@@ -34,7 +65,7 @@ def add_args(parser):
         "--batch_size",
         type=int,
         default=5,
-        metavar="B",
+        metavar="BS",
         help="input batch size for training (default: 5)",
     )
 
@@ -44,6 +75,14 @@ def add_args(parser):
         default=0.001,
         metavar="LR",
         help="learning rate (default: 0.3)",
+    )
+
+    parser.add_argument(
+        "--momentum",
+        type=float,
+        default=0.9,
+        metavar="M",
+        help="momentum (default: 0.9)",
     )
 
     parser.add_argument(
@@ -73,7 +112,7 @@ def add_args(parser):
     parser.add_argument(
         "--sampling_rate",
         type=int,
-        default=5,
+        default=16000,
         metavar="SR",
         help="sampling rate",
     )
