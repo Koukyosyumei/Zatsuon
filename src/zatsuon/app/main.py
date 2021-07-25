@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    model = DAE_Module(sampling_rate=args.sampling_rate)
+    model = DAE_Module(sampling_rate=int(args.sampling_rate * args.split_sec))
     model.to(device)
 
     if args.pretrained is not None:
