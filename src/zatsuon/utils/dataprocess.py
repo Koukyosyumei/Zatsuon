@@ -60,7 +60,7 @@ def convert_wav_to_training_data(
         split_sec: length of one record [sec]
         noise_amp: mean amplitude of noise
     """
-    path_list = glob.glob(path_to_folder + "*/.wav")
+    path_list = glob.glob(path_to_folder + "/*.wav")
 
     raw_data = []
     X = []
