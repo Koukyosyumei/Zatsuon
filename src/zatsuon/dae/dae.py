@@ -52,6 +52,10 @@ class DenoisedAutoEncoder:
         Args:
             train_dataset: dataset for training
             val_dataset: dataset for validation
+
+        Returns:
+            train_log: transition of training loss
+            val_log: transition of validation loss
         """
         train_log = []
         eval_log = []
@@ -92,6 +96,8 @@ class DenoisedAutoEncoder:
 
             if epoch % self.log_interval == 0:
                 print(epoch, train_loss, eval_loss)
+
+        return train_log, val_log
 
     def denoise(self, path_to_wav, path_to_output=None):
         """Denoise given noisy wav data
