@@ -3,6 +3,7 @@ import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from matplotlib import pyplot as plt
 
 from ..dae import DAE_Module, DenoisedAutoEncoder
 from ..utils import convert_wav_to_training_data, create_train_and_test_dataset
@@ -45,7 +46,13 @@ def main():
             epochs=args.epochs,
             log_interval=args.log_interval,
         )
-        denoised_autoencoder.train(train_dataset, val_dataset)
+
+        train_log, val_log = denoised_autoencoder.train(train_dataset, val_dataset)
+        if args.path_to_loss is not None:
+            plt.plot(train_log, label="train")
+            plt.plot(val_log, label="validation")
+            plt.savefig(args.path_to_loss)
+
         denoised_autoencoder.save_model(args.saved_model_path)
 
     elif args.task == "denoise":

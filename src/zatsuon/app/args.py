@@ -125,4 +125,12 @@ def add_args(parser):
         help="log interval",
     )
 
+    parser.add_argument(
+        "--path_to_loss",
+        type=str,
+        default=None,
+        metavar="PL",
+        help="path to png filw which shows the transtion of loss",
+    )
+
     return parser
