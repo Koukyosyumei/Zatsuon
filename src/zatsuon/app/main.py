@@ -51,6 +51,7 @@ def main():
         if args.path_to_loss is not None:
             plt.plot(train_log, label="train")
             plt.plot(val_log, label="validation")
+            plt.legend()
             plt.savefig(args.path_to_loss)
 
         denoised_autoencoder.save_model(args.saved_model_path)
