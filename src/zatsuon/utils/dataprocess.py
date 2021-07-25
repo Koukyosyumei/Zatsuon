@@ -66,7 +66,7 @@ def convert_wav_to_training_data(
     X = []
     y = []
 
-    for p in range(path_list):
+    for p in path_list:
         raw, _ = librosa.load(p, sr=sampling_rate)
         raw_data.append(raw)
 
