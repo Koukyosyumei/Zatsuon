@@ -114,9 +114,11 @@ class DenoisedAutoEncoder:
                 wave_padded.shape[0] / int(self.sampling_rate) / self.split_sec,
             )
         )
-        input_tensor = torch.Tensor(wave_padded_split).reshape(
-            -1, 1, self.sampling_rate
-        ).to(self.device)
+        input_tensor = (
+            torch.Tensor(wave_padded_split)
+            .reshape(-1, 1, self.sampling_rate)
+            .to(self.device)
+        )
 
         with torch.no_grad():
             y_denoised = self.model(input_tensor)
