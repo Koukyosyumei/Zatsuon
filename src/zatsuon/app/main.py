@@ -52,6 +52,8 @@ def main():
             plt.plot(train_log, label="train")
             plt.plot(val_log, label="validation")
             plt.legend()
+            plt.xlabel("epochs")
+            plt.ylabel("reconstruction-loss")
             plt.savefig(args.path_to_loss)
 
         denoised_autoencoder.save_model(args.saved_model_path)
