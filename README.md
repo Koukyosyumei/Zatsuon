@@ -1,2 +1,2 @@
 # Zatsuon
-remove noise of audio with AutoEncoder
+CLI Tool to remove audio noise with auto encoder
