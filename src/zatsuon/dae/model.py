@@ -27,7 +27,7 @@ class Decoder(nn.Module):
         self.sampling_rate = sampling_rate
         self.upsa1 = torch.nn.Upsample(int(sampling_rate / 2))
         self.conv3 = torch.nn.Conv1d(128, 64, 3, padding=1)
-        self.upsa2 = torch.nn.Upsample(sampling_rate)
+        self.upsa2 = torch.nn.Upsample(int(sampling_rate))
         self.conv4 = torch.nn.Conv1d(64, 1, 3, padding=1)
 
     def forward(self, x):
@@ -44,9 +44,9 @@ class Decoder(nn.Module):
 class DAE_Module(nn.Module):
     def __init__(self, sampling_rate=16e3):
         super(DAE_Module, self).__init__()
-        self.sampling_rate = sampling_rate
+        self.sampling_rate = int(sampling_rate)
         self.encoder = Encoder()
-        self.decoder = Decoder(sampling_rate=sampling_rate)
+        self.decoder = Decoder(sampling_rate=self.sampling_rate)
 
     def forward(self, x):
         x = self.encoder(x)
